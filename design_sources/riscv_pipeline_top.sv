@@ -85,11 +85,11 @@ module riscv_pipeline_top (
     
     // Suppress unused signal warnings (these signals are kept for debug/development)
     (* DONT_TOUCH = "TRUE" *) wire _unused_ok = &{1'b0, 
-        id_ex_instr[31:0],     // keep instruction for debug
-        id_ex_rs1[4:0],        // keep register addresses for hazard detection
-        id_ex_rs2[4:0],        // keep register addresses for hazard detection  
-        if_pc_next[31:0],      // keep for branch target calculation
-        id_stall               // keep for stall logic
+        id_ex_instr[31:0], // keep instruction for debug
+        id_ex_rs1[4:0], // keep register addresses for hazard detection
+        id_ex_rs2[4:0], // keep register addresses for hazard detection  
+        if_pc_next[31:0], // keep for branch target calculation
+        id_stall // keep for stall logic
     };
 
     // pipeline stages
@@ -162,16 +162,16 @@ module riscv_pipeline_top (
 
     // Hazard unit connections - matches port names in riscv_hazard_unit.sv
     riscv_hazard_unit hazard_unit (
-        .id_rs1(id_rs1),                 // From ID stage output
-        .id_rs2(id_rs2),                 // From ID stage output
-        .ex_rd(id_ex_rd),                // From ID/EX pipeline register
-        .ex_mem_read(id_ex_mem_read),    // From ID/EX pipeline register
-        .mem_rd(ex_mem_rd),              // From EX/MEM pipeline register
+        .id_rs1(id_rs1), // From ID stage output
+        .id_rs2(id_rs2), // From ID stage output
+        .ex_rd(id_ex_rd), // From ID/EX pipeline register
+        .ex_mem_read(id_ex_mem_read),// From ID/EX pipeline register
+        .mem_rd(ex_mem_rd), // From EX/MEM pipeline register
         .mem_reg_write(ex_mem_reg_write), // From EX/MEM pipeline register
-        .wb_rd(mem_wb_rd),               // From MEM/WB pipeline register
+        .wb_rd(mem_wb_rd), // From MEM/WB pipeline register
         .wb_reg_write(mem_wb_reg_write), // From MEM/WB pipeline register
-        .forward_rs1(forward_rs1),       // Output to forwarding unit
-        .forward_rs2(forward_rs2),       // Output to forwarding unit
+        .forward_rs1(forward_rs1), // Output to forwarding unit
+        .forward_rs2(forward_rs2),// Output to forwarding unit
         .load_use_hazard(load_use_hazard) // Output for stall control
     );
 
