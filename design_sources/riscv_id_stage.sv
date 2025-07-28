@@ -24,7 +24,7 @@ module riscv_id_stage (
     input  logic clk,
     input  logic rst_n,
     input  logic [31:0] instruction,
-    input  logic [31:0] pc,          // unused for you
+    input  logic [31:0] pc,          // unused for now
     input  logic wb_reg_write,
     input  logic [4:0]  wb_rd,
     input  logic [31:0] wb_data,
