@@ -92,13 +92,13 @@ module riscv_id_stage (
 endmodule
 
 module register_file (
-    input  logic        clk,
-    input  logic        rst_n,
+    input  logic clk,
+    input  logic rst_n,
     input  logic [4:0]  read_addr1,
     input  logic [4:0]  read_addr2,
     input  logic [4:0]  write_addr,
     input  logic [31:0] write_data,
-    input  logic        write_enable,
+    input  logic write_enable,
     output logic [31:0] read_data1,
     output logic [31:0] read_data2
 );
