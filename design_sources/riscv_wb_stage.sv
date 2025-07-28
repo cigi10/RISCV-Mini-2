@@ -31,7 +31,7 @@ module riscv_wb_stage (
     always_comb begin
         case (wb_src)
             2'b00: write_data = alu_result; // ALU result
-            2'b01: write_data = mem_data; // Memory data
+            2'b01: write_data = mem_data; // memory data
             2'b10: write_data = pc_plus4; // PC + 4 (for JAL)
             default: write_data = alu_result;
         endcase
