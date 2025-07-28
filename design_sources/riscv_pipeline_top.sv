@@ -21,78 +21,78 @@
 
 
 module riscv_pipeline_top (
-    input  logic        clk,
-    input  logic        rst_n,
+    input  logic clk,
+    input  logic rst_n,
     output logic [31:0] debug_pc,
     output logic [31:0] debug_instr,
     output logic [31:0] debug_reg_data,
     output logic [4:0]  debug_reg_addr,
-    output logic        debug_reg_we
+    output logic debug_reg_we
 );
 
-    // Pipeline registers
+    // pipeline registers
     logic [31:0] if_id_pc, if_id_pc_plus4, if_id_instr;
-    logic        if_id_valid;
+    logic if_id_valid;
     
     logic [31:0] id_ex_pc, id_ex_pc_plus4, id_ex_instr;
     logic [31:0] id_ex_rs1_data, id_ex_rs2_data, id_ex_imm;
     logic [4:0]  id_ex_rs1, id_ex_rs2, id_ex_rd;
     logic [3:0]  id_ex_alu_op;
-    logic        id_ex_reg_write, id_ex_mem_read, id_ex_mem_write;
-    logic        id_ex_branch, id_ex_jump, id_ex_alu_src;
+    logic id_ex_reg_write, id_ex_mem_read, id_ex_mem_write;
+    logic id_ex_branch, id_ex_jump, id_ex_alu_src;
     logic [1:0]  id_ex_wb_src;
-    logic        id_ex_valid;
+    logic id_ex_valid;
     
     logic [31:0] ex_mem_pc_plus4, ex_mem_alu_result, ex_mem_rs2_data;
     logic [4:0]  ex_mem_rd;
-    logic        ex_mem_reg_write, ex_mem_mem_read, ex_mem_mem_write;
+    logic ex_mem_reg_write, ex_mem_mem_read, ex_mem_mem_write;
     logic [1:0]  ex_mem_wb_src;
-    logic        ex_mem_branch_taken;
+    logic ex_mem_branch_taken;
     logic [31:0] ex_mem_branch_target;
-    logic        ex_mem_valid;
+    logic ex_mem_valid;
     
     logic [31:0] mem_wb_pc_plus4, mem_wb_alu_result, mem_wb_mem_data;
     logic [4:0]  mem_wb_rd;
-    logic        mem_wb_reg_write;
+    logic mem_wb_reg_write;
     logic [1:0]  mem_wb_wb_src;
-    logic        mem_wb_valid;
+    logic mem_wb_valid;
 
-    // Stage interconnects
+    // stage interconnects
     logic [31:0] if_pc, if_pc_next, if_instruction;
-    logic        if_stall;
+    logic if_stall;
     
     logic [31:0] id_rs1_data, id_rs2_data, id_immediate;
     logic [4:0]  id_rs1, id_rs2, id_rd;
     logic [3:0]  id_alu_op;
-    logic        id_reg_write, id_mem_read, id_mem_write;
-    logic        id_branch, id_jump, id_alu_src;
+    logic id_reg_write, id_mem_read, id_mem_write;
+    logic id_branch, id_jump, id_alu_src;
     logic [1:0]  id_wb_src;
-    logic        id_stall, id_flush;
+    logic id_stall, id_flush;
     
     logic [31:0] ex_alu_result, ex_branch_target;
-    logic        ex_branch_taken;
+    logic ex_branch_taken;
     logic [31:0] ex_forward_rs1, ex_forward_rs2;
     
     logic [31:0] mem_read_data;
     logic [31:0] wb_write_data;
 
-    // Hazard control
+    // hazard control
     logic [1:0] forward_rs1, forward_rs2;
-    logic       load_use_hazard;
+    logic load_use_hazard;
 
-    // Suppress linter warnings for signals during development
-    assign id_stall = 1'b0;  // Will be used for load-use hazard handling
+    // suppress linter warnings for signals during development
+    assign id_stall = 1'b0;  // for load-use hazard handling
     
     // Suppress unused signal warnings (these signals are kept for debug/development)
     (* DONT_TOUCH = "TRUE" *) wire _unused_ok = &{1'b0, 
-        id_ex_instr[31:0],     // Keep instruction for debug
-        id_ex_rs1[4:0],        // Keep register addresses for hazard detection
-        id_ex_rs2[4:0],        // Keep register addresses for hazard detection  
-        if_pc_next[31:0],      // Keep for branch target calculation
-        id_stall               // Keep for stall logic
+        id_ex_instr[31:0],     // keep instruction for debug
+        id_ex_rs1[4:0],        // keep register addresses for hazard detection
+        id_ex_rs2[4:0],        // keep register addresses for hazard detection  
+        if_pc_next[31:0],      // keep for branch target calculation
+        id_stall               // keep for stall logic
     };
 
-    // Pipeline stages
+    // pipeline stages
     riscv_if_stage if_stage (
         .clk(clk),
         .rst_n(rst_n),
@@ -186,7 +186,7 @@ module riscv_pipeline_top (
         .forwarded_rs2_data(ex_forward_rs2)
     );
 
-    // Pipeline control
+    // pipeline control
     assign if_stall = load_use_hazard;
     assign id_flush = ex_mem_branch_taken;
 
